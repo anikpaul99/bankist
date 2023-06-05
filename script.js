@@ -64,6 +64,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /**
  * display the movements in ui
  * @param {[]} movements the movements array in account1 object
+ * @returns {undefined}
  * @todo to display movements based on the logged in users info
  */
 const displayMovements = function (movements) {
@@ -89,18 +90,46 @@ displayMovements(account1.movements);
 /**
  * calculate total balance and display it to ui
  * @param {[]} movements the movements array in account1 object
+ * @returns {undefined}
  * @todo to display balance based on the logged in users info
  */
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, cur) => acc + cur, 0);
 
-  labelBalance.textContent = `${balance} €`;
+  labelBalance.textContent = `${balance}€`;
 };
 calcDisplayBalance(account1.movements);
 
 /**
+ * calculate total deposits, withdrawals and display it to ui
+ * @param {[]} movements the movements array in account1 object
+ * @returns {undefined}
+ * @todo to display summary of income, outcome, interests based on logged in users info
+ */
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(mov => (mov * 1.2) / 100)
+    .filter(mov => mov >= 1)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
+
+/**
  * create a 'username' property in each account object
  * @param {Object[]} accs the accounts array of objects
+ * @returns {undefined}
  */
 const createUsernames = function (accs) {
   accs.forEach(acc => {
