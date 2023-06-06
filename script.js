@@ -209,6 +209,24 @@ btnTransfer.addEventListener('click', function (e) {
 });
 
 /**
+ * enable user to take loan money from bank
+ */
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // Add the movement
+    currentAccount.movements.push(amount);
+
+    // Update UI
+    updateUI(currentAccount);
+  }
+  // Clear the input field
+  inputLoanAmount.value = '';
+});
+
+/**
  * close user account
  */
 btnClose.addEventListener('click', function (e) {
