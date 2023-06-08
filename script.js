@@ -337,14 +337,16 @@ btnLoan.addEventListener('click', function (e) {
 
   const amount = Math.floor(inputLoanAmount.value);
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    // Add the movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      // Add the movement
+      currentAccount.movements.push(amount);
 
-    // Add loan date
-    currentAccount.movementsDates.push(new Date().toISOString());
+      // Add loan date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    // Update UI
-    updateUI(currentAccount);
+      // Update UI
+      updateUI(currentAccount);
+    }, 2500);
   }
   // Clear the input field
   inputLoanAmount.value = '';
@@ -386,3 +388,22 @@ btnSort.addEventListener('click', function (e) {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
+
+const ingredients = ['olives', 'spinach'];
+const pizzaTimer = setTimeout(
+  (ing1, ing2) => console.log(`Here is you pizza with ${ing1} and ${ing2}`),
+  3000,
+  ...ingredients
+);
+console.log('Waiting...');
+
+if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+
+setInterval(function () {
+  const now = new Date();
+  // const hour = now.getHours();
+  // const min = now.getMinutes();
+  // const sec = now.getSeconds();
+  // console.log(`${hour}h:${min}m:${sec}s`);
+  // console.log(now);
+}, 1000);
