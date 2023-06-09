@@ -248,13 +248,41 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
-// Event handler
-let currentAccount;
+/**
+ * create a countdown timer that will log out user after unactive session
+ * @returns {string} a countdown timer is returned
+ */
+const startLogOutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
 
-// FALKE LOGGED IN : TEMP
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+    // In each call, print the remaining time to UI
+    labelTimer.textContent = `${min}:${sec}`;
+
+    // When 0 seconds, stop timer and log out user
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = `Log in to get started`;
+      containerApp.style.opacity = 0;
+    }
+
+    // Decrease 1s
+    time--;
+  };
+
+  // Set time to 5 minutes
+  let time = 300;
+
+  // Call the timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
+
+  return timer;
+};
+
+// Event handler
+let currentAccount, timer;
 
 /**
  * implement login
@@ -292,6 +320,10 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
+    // Timer
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
+
     // Update UI
     updateUI(currentAccount);
   }
@@ -326,6 +358,10 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+
+    // Reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
@@ -346,6 +382,10 @@ btnLoan.addEventListener('click', function (e) {
 
       // Update UI
       updateUI(currentAccount);
+
+      // Reset timer
+      clearInterval(timer);
+      timer = startLogOutTimer();
     }, 2500);
   }
   // Clear the input field
@@ -388,22 +428,3 @@ btnSort.addEventListener('click', function (e) {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
-
-const ingredients = ['olives', 'spinach'];
-const pizzaTimer = setTimeout(
-  (ing1, ing2) => console.log(`Here is you pizza with ${ing1} and ${ing2}`),
-  3000,
-  ...ingredients
-);
-console.log('Waiting...');
-
-if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
-
-setInterval(function () {
-  const now = new Date();
-  // const hour = now.getHours();
-  // const min = now.getMinutes();
-  // const sec = now.getSeconds();
-  // console.log(`${hour}h:${min}m:${sec}s`);
-  // console.log(now);
-}, 1000);
