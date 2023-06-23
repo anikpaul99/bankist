@@ -5,9 +5,9 @@
 
 ---
 
-# How to use
+# Demo
 
-Go to https://bankist-anik.netlify.app/
+Go to [**Bankist app site**](https://bankist-anik.netlify.app/)
 
 ## Steps:
 
